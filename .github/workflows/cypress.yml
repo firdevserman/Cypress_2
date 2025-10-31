@@ -17,17 +17,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: npm
 
       - name: Install deps
         run: npm ci || npm Install
 
-      - name: Run Cypress (headless)
+      - name: Run Cypress tests (timeout protected)
         uses: cypress-io/github-action@v6
         with:
-          command: npx cypress run
+          command: npx cypress run --config pageLoadTimeout=20000, defaultCommandTimeout=10000
+          wait-on-timeout: 60
 
-      - name: Upload videos & screenshots 
+      - name: Upload Cypress Artifacts 
         if: always()
         uses: actions/upload-artifact@v4
         with:
